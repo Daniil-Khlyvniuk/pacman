@@ -1,9 +1,4 @@
-import {
-	createImage,
-	ctx,
-	isItemCollidesWithBorder,
-
-} from "./App.js"
+import { createImage, ctx, isItemCollidesWithBorder } from "./App.js"
 import { Boundary } from "./Boundary.js"
 
 
@@ -60,7 +55,7 @@ export class Ghost {
 	}
 
 	isPacmanCaught({ x: pacmanX, y: pacmanY }, pacmanRadius) {
-		return  Math.hypot(
+		return Math.hypot(
 			this.position.x - pacmanX,
 			this.position.y - pacmanY
 		) < this.radius + pacmanRadius
@@ -176,7 +171,7 @@ export class Ghost {
 
 		ctx.drawImage(
 			createImage(this.eye),
-			x - 10,
+			x - 9.5,
 			y - 6,
 			Boundary.width / 2,
 			Boundary.height / 5
@@ -206,9 +201,9 @@ export class Ghost {
 
 		ctx.drawImage(
 			this.img,
-			x - 15,
+			x - 12,
 			y - 15,
-			Boundary.width - 10,
+			Boundary.width - 15,
 			Boundary.height - 10
 		)
 

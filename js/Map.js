@@ -51,7 +51,19 @@ export class Map {
 			velocity: {
 				x: Ghost.speed,
 				y: 0
-			}
+			},
+			name: "clyde"
+		}),
+		new Ghost({
+			position: {
+				x: Boundary.width + Boundary.width * .5,
+				y: 6 * Boundary.width + Boundary.height * .5
+			},
+			velocity: {
+				x: 0,
+				y: Ghost.speed
+			},
+			name: "inky"
 		})
 	]
 	pellets = []

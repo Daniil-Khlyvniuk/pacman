@@ -12,6 +12,9 @@ export class Pacman {
 		this.position = position
 		this.velocity = velocity
 		this.radius = 15
+		this.radians = .75
+		this.openRate = .12
+		this.rotation = 0
 	}
 
 	move(borders) {
@@ -116,10 +119,15 @@ export class Pacman {
 	}
 
 	update() {
+		this.draw()
+		this.setRotation()
 		this.position.x += this.velocity.x
 		this.position.y += this.velocity.y
 
-		this.draw()
+		if (this.radians < 0 || this.radians > .75) {
+			this.openRate = -this.openRate
+		}
+		this.radians += this.openRate
 	}
 
 	pacmanCollidesWithBorder(borders) {
@@ -128,17 +136,34 @@ export class Pacman {
 		})
 	}
 
+	setRotation() {
+		const { x, y } = this.velocity
+
+		if (x > 0) this.rotation = 0
+		else if (x < 0) this.rotation = Math.PI
+		else if (y > 0) this.rotation = Math.PI * .5
+		else if (y < 0) this.rotation = Math.PI * 1.5
+	}
+
 	draw() {
+		const { x, y } = this.position
+
+		ctx.save()
+		ctx.translate(x, y)
+		ctx.rotate(this.rotation)
+		ctx.translate(-x, -y)
 		ctx.beginPath()
 		ctx.arc(
-			this.position.x,
-			this.position.y,
+			x,
+			y,
 			this.radius,
-			0,
-			Math.PI * 2
+			this.radians,
+			Math.PI * 2 - this.radians
 		)
+		ctx.lineTo(x, y)
 		ctx.fillStyle = "gold"
 		ctx.fill()
 		ctx.closePath()
+		ctx.restore()
 	}
 }
