@@ -28,18 +28,18 @@ export class Ghost {
 	}
 
 	names = {
-		"pinky": "../images/ghosts/pinky.png",
-		"blinky": "../images/ghosts/blinky.png",
-		"inky": "../images/ghosts/inky.png",
-		"clyde": "../images/ghosts/clyde.png",
-		"scared": "../images/ghosts/scared.png"
+		"pinky": "/pacman/images/ghosts/pinky.png",
+		"blinky": "/pacman/images/ghosts/blinky.png",
+		"inky": "/pacman/images/ghosts/inky.png",
+		"clyde": "/pacman/images/ghosts/clyde.png",
+		"scared": "/pacman/images/ghosts/scared.png"
 	}
 
 	eyes = {
-		"up": "../images/ghosts/eyes/eyesUp.png",
-		"down": "../images/ghosts/eyes/eyesDown.png",
-		"left": "../images/ghosts/eyes/eyesLeft.png",
-		"right": "../images/ghosts/eyes/eyesRight.png"
+		"up": "/pacman/images/ghosts/eyes/eyesUp.png",
+		"down": "/pacman/images/ghosts/eyes/eyesDown.png",
+		"left": "/pacman/images/ghosts/eyes/eyesLeft.png",
+		"right": "/pacman/images/ghosts/eyes/eyesRight.png"
 	}
 
 	move(borders) {
