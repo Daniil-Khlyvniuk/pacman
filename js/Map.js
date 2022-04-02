@@ -1,4 +1,4 @@
-import { createImage, ScoreIncrement, stopAnimation } from "./App.js"
+import { createImage, ScoreIncrement, stopAnimation, winGame } from "./App.js"
 import { Boundary } from "./Boundary.js"
 import { Ghost } from "./Ghost.js"
 import { Pellet } from "./Pellet.js"
@@ -153,8 +153,9 @@ export class Map {
 	}
 
 	drawMap(pacman) {
-		const isFill = Boolean(this.borders.length && this.pellets.length)
+		const isFill = Boolean(this.borders.length)
 		if (!isFill) this.fillMap()
+		winGame(this.pellets, this.powerUps)
 
 		this.drawBorders()
 		this.drawFood(this.powerUps, pacman)

@@ -8,7 +8,6 @@ export class Ghost {
 	constructor({
 								position,
 								velocity,
-								startDirection = "left",
 								name = "clyde"
 							}) {
 		this.position = position
@@ -18,7 +17,6 @@ export class Ghost {
 		this.name = name
 		this.img = createImage(this.names[this.name])
 		this.eye = ""
-		this.startDirection = startDirection
 		this.isScared = false
 	}
 
@@ -165,9 +163,18 @@ export class Ghost {
 		this.eye = this.eyes[direction]
 	}
 
+	setDirection() {
+		const { x, y } = this.velocity
+
+		if (x > 0) return "right"
+		if (x < 0) return "left"
+		if (y > 0) return "down"
+		if (y < 0) return "up"
+	}
+
 	drawEyes() {
 		const { x, y } = this.position
-		if (!this.eye) this.setEyes(this.startDirection)
+		if (!this.eye) this.setEyes(this.setDirection())
 
 		ctx.drawImage(
 			createImage(this.eye),

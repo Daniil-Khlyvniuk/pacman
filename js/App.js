@@ -104,6 +104,13 @@ export const ScoreIncrement = (increment = 10) => {
 	scoreEl.innerHTML = score
 }
 
+export const winGame = (pellets, powerPellets) => {
+	if (!pellets.length && !powerPellets.length) {
+		stopAnimation()
+		console.log("YOU WIN")
+	}
+}
+
 export const animation = (map, pacman) => () => {
 	animationId = requestAnimationFrame(animation(map, pacman))
 	clear()
@@ -112,8 +119,11 @@ export const animation = (map, pacman) => () => {
 	pacman.pacmanCollidesWithBorder(map.borders)
 	pacman.update()
 	pacman.stop()
+
 }
 
 export const stopAnimation = () => {
 	cancelAnimationFrame(animationId)
 }
+
+
