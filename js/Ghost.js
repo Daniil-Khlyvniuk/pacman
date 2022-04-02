@@ -2,7 +2,7 @@ import {
 	createImage,
 	ctx,
 	isItemCollidesWithBorder,
-	stopAnimation
+
 } from "./App.js"
 import { Boundary } from "./Boundary.js"
 
@@ -24,7 +24,7 @@ export class Ghost {
 		this.img = createImage(this.names[this.name])
 		this.eye = ""
 		this.startDirection = startDirection
-		this.scared = false
+		this.isScared = false
 	}
 
 	names = {
@@ -60,15 +60,10 @@ export class Ghost {
 	}
 
 	isPacmanCaught({ x: pacmanX, y: pacmanY }, pacmanRadius) {
-		const isPacmanCaught = Math.hypot(
+		return  Math.hypot(
 			this.position.x - pacmanX,
 			this.position.y - pacmanY
 		) < this.radius + pacmanRadius
-
-
-		if (isPacmanCaught) {
-			stopAnimation()
-		}
 	}
 
 	setVelocity(direction) {
@@ -188,6 +183,24 @@ export class Ghost {
 		)
 	}
 
+	scared() {
+		this.isScared = true
+		this.setImg()
+
+		setTimeout(() => {
+			this.isScared = false
+			this.setImg()
+		}, 3000)
+	}
+
+	setImg() {
+		if (this.isScared) {
+			this.img = createImage(this.names["scared"])
+		} else {
+			this.img = createImage(this.names[this.name])
+		}
+	}
+
 	draw() {
 		const { x, y } = this.position
 
@@ -198,6 +211,7 @@ export class Ghost {
 			Boundary.width - 10,
 			Boundary.height - 10
 		)
-		if (!this.scared) this.drawEyes()
+
+		if (!this.isScared) this.drawEyes()
 	}
 }

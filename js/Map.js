@@ -1,13 +1,14 @@
-import { createImage, ScoreIncrement } from "./App.js"
+import { createImage, ScoreIncrement, stopAnimation } from "./App.js"
 import { Boundary } from "./Boundary.js"
 import { Ghost } from "./Ghost.js"
 import { Pellet } from "./Pellet.js"
+import { PowerUp } from "./PowerUp.js"
 
 
 export class Map {
 	map = [
 		[ "1", "-", "-", "-", "-", "-", "-", "-", "-", "-", "2" ],
-		[ "|", ".", ".", ".", ".", ".", "p", ".", ".", ".", "|" ],
+		[ "|", " ", ".", ".", ".", ".", ".", ".", ".", ".", "|" ],
 		[ "|", ".", "b", ".", "[", "7", "]", ".", "b", ".", "|" ],
 		[ "|", ".", ".", ".", ".", "_", ".", ".", ".", ".", "|" ],
 		[ "|", ".", "[", "]", ".", ".", ".", "[", "]", ".", "|" ],
@@ -17,7 +18,7 @@ export class Map {
 		[ "|", ".", "[", "]", ".", ".", ".", "[", "]", ".", "|" ],
 		[ "|", ".", ".", ".", ".", "^", ".", ".", ".", ".", "|" ],
 		[ "|", ".", "b", ".", "[", "5", "]", ".", "b", ".", "|" ],
-		[ "|", ".", ".", ".", ".", ".", ".", ".", ".", ".", "|" ],
+		[ "|", ".", ".", ".", ".", ".", ".", ".", ".", "p", "|" ],
 		[ "4", "-", "-", "-", "-", "-", "-", "-", "-", "-", "3" ]
 	]
 
@@ -41,9 +42,21 @@ export class Map {
 		".": "",
 		"p": ""
 	}
+	ghosts = [
+		new Ghost({
+			position: {
+				x: 6 * Boundary.width + Boundary.width * .5,
+				y: Boundary.width + Boundary.height * .5
+			},
+			velocity: {
+				x: Ghost.speed,
+				y: 0
+			}
+		})
+	]
 	pellets = []
 	borders = []
-	ghosts = []
+	powerUps = []
 
 	fillMap() {
 		this.map.forEach((row, i) => {
@@ -60,18 +73,16 @@ export class Map {
 						)
 						break
 					case "p":
-						this.ghosts.push(
-							new Ghost({
+						this.powerUps.push(
+							new PowerUp({
 								position: {
 									x: j * Boundary.width + Boundary.width * .5,
 									y: i * Boundary.width + Boundary.height * .5
-								},
-								velocity: {
-									x: Ghost.speed,
-									y: 0
 								}
 							})
 						)
+						break
+					case " ":
 						break
 					default:
 						this.borders.push(
@@ -93,25 +104,40 @@ export class Map {
 		this.borders.forEach(border => border.draw())
 	}
 
-	drawPellets(pacman) {
-		for (let i = this.pellets.length - 1; 0 < i; i--) {
-			const pellet = this.pellets[i]
-			const isEaten = pellet.isEaten(pacman.position, pacman.radius)
+	drawGhosts(pacman) {
+		for (let i = this.ghosts.length - 1; i >= 0; i--) {
+			const ghost = this.ghosts[i]
+			const isCollides = ghost.isPacmanCaught(pacman.position, pacman.radius)
 
-			pellet.draw()
-			if (isEaten) {
-				this.pellets.splice(i, 1)
-				ScoreIncrement()
+			if (isCollides) {
+				if (!ghost.isScared) stopAnimation()
+				else {
+					ScoreIncrement(100)
+					this.ghosts.splice(i, 1)
+				}
 			}
+
+			ghost.move(this.borders)
+			ghost.update()
 		}
 	}
 
-	drawGhosts(pacman) {
-		this.ghosts.forEach(ghost => {
-			ghost.isPacmanCaught(pacman.position, pacman.radius)
-			ghost.move(this.borders)
-			ghost.update()
-		})
+	drawFood(pelletsArr, pacman) {
+		for (let i = pelletsArr.length - 1; 0 <= i; i--) {
+			const pellet = pelletsArr[i]
+			const [ isEaten, powerUp ] = pellet.isEaten(pacman.position, pacman.radius)
+
+			pellet.draw()
+
+			if (isEaten) {
+				pelletsArr.splice(i, 1)
+				ScoreIncrement()
+
+				if (powerUp) {
+					this.ghosts.forEach(ghost => ghost.scared())
+				}
+			}
+		}
 	}
 
 	drawMap(pacman) {
@@ -119,7 +145,8 @@ export class Map {
 		if (!isFill) this.fillMap()
 
 		this.drawBorders()
-		this.drawPellets(pacman)
+		this.drawFood(this.powerUps, pacman)
+		this.drawFood(this.pellets, pacman)
 		this.drawGhosts(pacman)
 	}
 }

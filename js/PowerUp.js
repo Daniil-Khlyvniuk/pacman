@@ -1,10 +1,10 @@
 import { ctx } from "./App.js"
 
 
-export class Pellet {
+export class PowerUp {
 	constructor({ position }) {
 		this.position = position
-		this.radius = 3
+		this.radius = 10
 	}
 
 	isEaten({ x: pacmanX, y: pacmanY }, pacmanRadius) {
@@ -15,7 +15,7 @@ export class Pellet {
 			)
 			<
 			pacmanRadius + this.radius,
-			false
+			true
 		]
 	}
 
