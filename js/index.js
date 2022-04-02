@@ -1,17 +1,7 @@
-import {
-	animation,
-	canvas,
-	handleKeyDown,
-	handleKeyUp,
-	stopAnimation
-} from "./App.js"
+import { animation, handleKeyDown, handleKeyUp, setCanvasSize } from "./App.js"
 import { Boundary } from "./Boundary.js"
 import { Map } from "./Map.js"
 import { Pacman } from "./Pacman.js"
-
-
-canvas.width = window.innerWidth
-canvas.height = window.innerHeight
 
 
 const map = new Map()
@@ -28,6 +18,7 @@ const startGame = animation(map, pacman)
 
 window.addEventListener("keydown", handleKeyDown)
 window.addEventListener("keyup", handleKeyUp)
+setCanvasSize(map)
 
 startGame()
 

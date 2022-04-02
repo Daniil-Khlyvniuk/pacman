@@ -4,7 +4,6 @@ import { Boundary } from "./Boundary.js"
 export const canvas = document.querySelector("#game")
 export const ctx = canvas.getContext("2d")
 export const scoreEl = document.querySelector("#score")
-let score = 0
 export let animationId
 
 export const controlKeys = {
@@ -16,6 +15,16 @@ export const controlKeys = {
 export let lastKey = ""
 export let prevKey = ""
 
+let score = 0
+
+
+export const setCanvasSize = ({ map }) => {
+	const width = map[0].length * Boundary.width
+	const height = map.length * Boundary.height
+
+	canvas.width = width
+	canvas.height = height
+}
 
 export const handleKeyDown = ({ key }) => {
 	const { w, a, s, d } = controlKeys
