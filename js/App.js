@@ -1,4 +1,9 @@
 import { Boundary } from "./Boundary.js"
+import { Form } from "./Form.js"
+import { Level } from "./Level.js"
+import { Map } from "./Map.js"
+import { ModalWindow } from "./ModalWindow.js"
+import { Pacman } from "./Pacman.js"
 
 
 export const canvas = document.querySelector("#game")
@@ -14,10 +19,15 @@ export const controlKeys = {
 }
 export let lastKey = ""
 export let prevKey = ""
-
 export let currLvl = 1
 let score = 0
 
+// export const startPacmanData =
+
+
+export const setLevel = (lvl) => {
+	currLvl = lvl
+}
 
 export const setCanvasSize = ({ map }) => {
 	const width = map[0].length * Boundary.width
@@ -116,8 +126,7 @@ export const ScoreIncrement = (increment = 10) => {
 
 export const winGame = (pellets, powerPellets) => {
 	if (!pellets.length && !powerPellets.length) {
-		stopAnimation()
-		console.log("YOU WIN")
+		gameOver("You win")
 	}
 }
 
@@ -133,19 +142,52 @@ export const teleport = (obj) => {
 	}
 }
 
-export const animation = (map, pacman) => () => {
-	animationId = requestAnimationFrame(animation(map, pacman))
+export const animation = (map, pacman) => (isStarted) => {
+	if (isStarted) {
+		animationId = requestAnimationFrame(animation(map, pacman))
+	}
 	clear()
 	map.drawMap(pacman)
 	pacman.move(map.borders)
 	pacman.pacmanCollidesWithBorder(map.borders)
 	pacman.update()
 	pacman.stop()
-
 }
+
+
+export const newGame = (isStarted) => {
+	ScoreIncrement(-score)
+	const lvlData = new Level(currLvl).getLevelData()
+	const map = new Map(lvlData)
+	const pacman = new Pacman({
+		position: {
+			x: Boundary.width + Boundary.width * .5,
+			y: Boundary.height + Boundary.height * .5
+		},
+		velocity: { x: 0, y: 0 }
+	})
+
+	setCanvasSize(map)
+	animation(map, pacman)(isStarted)
+}
+
 
 export const stopAnimation = () => {
 	cancelAnimationFrame(animationId)
 }
 
+export const gameOver = (text) => {
+	stopAnimation()
+
+
+	setTimeout(() => {
+		const form = new Form({
+			title: text,
+			txt: "Choose level",
+			buttonTxt: "Start",
+			currLvl: currLvl
+		}).getForm()
+		new ModalWindow(form).render()
+	}, 300)
+}
 

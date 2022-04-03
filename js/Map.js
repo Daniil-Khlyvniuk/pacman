@@ -1,14 +1,15 @@
-import { createImage, ScoreIncrement, stopAnimation, winGame } from "./App.js"
+import { createImage, gameOver, ScoreIncrement, winGame } from "./App.js"
 import { Boundary } from "./Boundary.js"
 import { Pellet } from "./Pellet.js"
 import { PowerUp } from "./PowerUp.js"
 
 
 export class Map {
-	constructor({map, ghosts}) {
+	constructor({ map, ghosts }) {
 		this.map = map
 		this.ghosts = ghosts
 	}
+
 	symbols = {
 		"1": "/pacman/images/borders/pipeCorner1.png",
 		"2": "/pacman/images/borders/pipeCorner2.png",
@@ -85,8 +86,9 @@ export class Map {
 			const isCollides = ghost.isPacmanCaught(pacman.position, pacman.radius)
 
 			if (isCollides) {
-				if (!ghost.isScared) stopAnimation()
-				else {
+				if (!ghost.isScared) {
+					gameOver("You loose")
+				} else {
 					ScoreIncrement(100)
 					this.ghosts.splice(i, 1)
 				}
