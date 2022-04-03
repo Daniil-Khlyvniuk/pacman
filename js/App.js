@@ -15,6 +15,7 @@ export const controlKeys = {
 export let lastKey = ""
 export let prevKey = ""
 
+export let currLvl = 1
 let score = 0
 
 
@@ -117,6 +118,18 @@ export const winGame = (pellets, powerPellets) => {
 	if (!pellets.length && !powerPellets.length) {
 		stopAnimation()
 		console.log("YOU WIN")
+	}
+}
+
+export const teleport = (obj) => {
+	if (obj.position.x < 0) {
+		obj.position.x = canvas.width
+	} else if (obj.position.x > canvas.width) {
+		obj.position.x = 0
+	} else if (obj.position.y > canvas.height) {
+		obj.position.y = 0
+	} else if (obj.position.y < 0) {
+		obj.position.y = canvas.height
 	}
 }
 

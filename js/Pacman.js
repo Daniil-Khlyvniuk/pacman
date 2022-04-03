@@ -3,7 +3,8 @@ import {
 	ctx,
 	isItemCollidesWithBorder,
 	lastKey,
-	prevKey
+	prevKey,
+	teleport
 } from "./App.js"
 
 
@@ -121,6 +122,7 @@ export class Pacman {
 	update() {
 		this.draw()
 		this.setRotation()
+		teleport(this)
 		this.position.x += this.velocity.x
 		this.position.y += this.velocity.y
 
@@ -144,6 +146,7 @@ export class Pacman {
 		else if (y > 0) this.rotation = Math.PI * .5
 		else if (y < 0) this.rotation = Math.PI * 1.5
 	}
+
 
 	draw() {
 		const { x, y } = this.position

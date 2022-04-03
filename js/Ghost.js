@@ -1,4 +1,4 @@
-import { createImage, ctx, isItemCollidesWithBorder } from "./App.js"
+import { createImage, ctx, isItemCollidesWithBorder, teleport } from "./App.js"
 import { Boundary } from "./Boundary.js"
 
 
@@ -36,21 +36,27 @@ export class Ghost {
 	}
 
 	move(borders) {
-		const collisions = this.setCollisions(borders)
+		let collisions = this.setCollisions(borders)
 
 		if (collisions.length > this.prevCollisions.length) {
 			this.prevCollisions = collisions
 		}
 
-		if (JSON.stringify(collisions) !== JSON.stringify(this.prevCollisions)) {
+		if (
+			JSON.stringify(collisions) !== JSON.stringify(this.prevCollisions)
+			||
+			collisions.length >= 3
+		) {
 			this.setPrevCollisions()
 			const pathWays = this.getPathWays(collisions)
 			const direction = this.getDirection(pathWays)
 			this.setEyes(direction)
 			this.setVelocity(direction)
+
 			this.prevCollisions = []
 		}
 	}
+
 
 	isPacmanCaught({ x: pacmanX, y: pacmanY }, pacmanRadius) {
 		return Math.hypot(
@@ -91,7 +97,7 @@ export class Ghost {
 			if (up) collisions.push("up")
 			if (down) collisions.push("down")
 		})
-		return collisions
+		return [ ...new Set(collisions) ]
 	}
 
 	setPrevCollisions() {
@@ -103,16 +109,24 @@ export class Ghost {
 		else if (velY > 0) this.prevCollisions.push("down")
 	}
 
+	getPathWays(collisions) {
+		const pathWays = this.prevCollisions.filter(collision => {
+			return !collisions.includes(collision)
+		})
+		if (pathWays.length) return pathWays
+
+		const { x, y } = this.velocity
+		if (x > 0) return [ "left" ]
+		if (x < 0) return [ "right" ]
+		if (y > 0) return [ "up" ]
+		if (y < 0) return [ "down" ]
+	}
+
 	getDirection(pathWays) {
 		const randomIndex = Math.floor(Math.random() * pathWays.length)
 		return pathWays[randomIndex]
 	}
 
-	getPathWays(collisions) {
-		return this.prevCollisions.filter(collision => {
-			return !collisions.includes(collision)
-		})
-	}
 
 	getCollides(border) {
 		return {
@@ -153,6 +167,7 @@ export class Ghost {
 	}
 
 	update() {
+		teleport(this)
 		this.position.x += this.velocity.x
 		this.position.y += this.velocity.y
 
