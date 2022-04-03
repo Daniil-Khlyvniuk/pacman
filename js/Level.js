@@ -90,7 +90,7 @@ export class Level {
 			map: [
 				[ "1", "-", "-", "-", "7", "-", "-", "-", "-", "-", "7", "-", "-", "-", "2" ],
 				[ "|", " ", ".", ".", "_", ".", ".", ".", ".", ".", "_", ".", ".", ".", "|" ],
-				[ "|", "p", "b", ".", ".", ".", "^", ".", "^", ".", ".", ".", "b", ".", "|" ],
+				[ "|", ".", "b", ".", ".", ".", "^", ".", "^", ".", ".", ".", "b", ".", "|" ],
 				[ "|", ".", ".", ".", "b", ".", "_", ".", "_", ".", "b", ".", ".", ".", "|" ],
 				[ "|", ".", "^", ".", ".", ".", ".", ".", ".", ".", ".", ".", "^", "p", "|" ],
 				[ "4", "-", "5", "]", ".", "1", "]", " ", "[", "2", ".", "[", "5", "-", "3" ],
@@ -116,11 +116,11 @@ export class Level {
 				}),
 				new Ghost({
 					position: {
-						x: 7 * Boundary.width + Boundary.width * .5,
+						x: 6 * Boundary.width + Boundary.width * .5,
 						y: 6 * Boundary.width + Boundary.height * .5
 					},
 					velocity: {
-						x: Ghost.speed,
+						x: -Ghost.speed,
 						y: 0
 					},
 					name: "inky"
@@ -138,11 +138,11 @@ export class Level {
 				}),
 				new Ghost({
 					position: {
-						x: 7 * Boundary.width + Boundary.width * .5,
+						x: 8 * Boundary.width + Boundary.width * .5,
 						y: 6 * Boundary.width + Boundary.height * .5
 					},
 					velocity: {
-						x: -Ghost.speed,
+						x: Ghost.speed,
 						y: 0
 					},
 					name: "pinky"
