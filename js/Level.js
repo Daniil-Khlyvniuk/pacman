@@ -72,6 +72,17 @@ export class Level {
 						y: Ghost.speed
 					},
 					name: "inky"
+				}),
+				new Ghost({
+					position: {
+						x: 7 * Boundary.width + Boundary.width * .5,
+						y: 6 * Boundary.width + Boundary.height * .5
+					},
+					velocity: {
+						x: 0,
+						y: -Ghost.speed
+					},
+					name: "blinky"
 				})
 			]
 		},
