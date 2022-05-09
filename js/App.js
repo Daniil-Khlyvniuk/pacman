@@ -22,8 +22,6 @@ export let prevKey = ""
 export let currLvl = 1
 let score = 0
 
-// export const startPacmanData =
-
 
 export const setLevel = (lvl) => {
 	currLvl = lvl
@@ -37,52 +35,50 @@ export const setCanvasSize = ({ map }) => {
 	canvas.height = height
 }
 
-export const handleKeyDown = ({ key }) => {
+export const handleKeyDown = ({ code }) => {
 	const { w, a, s, d } = controlKeys
 
-	switch (key.toLowerCase()) {
-		case "w":
-		case "ц":
+	switch (code) {
+		case "KeyW":
 			w.pressed = true
+			lastKey = "w"
 			break
-		case "a":
-		case "ф":
+		case "KeyA":
 			a.pressed = true
+			lastKey = "a"
 			break
-		case "s":
-		case "ы":
+		case "KeyS":
 			s.pressed = true
+			lastKey = "s"
 			break
-		case "d":
-		case "в":
+		case "KeyD":
 			d.pressed = true
+			lastKey = "d"
 			break
 	}
-	lastKey = key
 }
 
-export const handleKeyUp = ({ key }) => {
+export const handleKeyUp = ({ code }) => {
 	const { w, a, s, d } = controlKeys
 
-	switch (key.toLowerCase()) {
-		case "w":
-		case "ц":
+	switch (code) {
+		case "KeyW":
 			w.pressed = false
+			prevKey = "w"
 			break
-		case "a":
-		case "ф":
+		case "KeyA":
 			a.pressed = false
+			prevKey = "a"
 			break
-		case "s":
-		case "ы":
+		case "KeyS":
 			s.pressed = false
+			prevKey = "s"
 			break
-		case "d":
-		case "в":
+		case "KeyD":
 			d.pressed = false
+			prevKey = "d"
 			break
 	}
-	prevKey = key
 }
 
 export const isItemCollidesWithBorder = (item, border) => {
@@ -154,9 +150,7 @@ export const animation = (map, pacman) => (isStarted) => {
 	pacman.stop()
 }
 
-
 export const newGame = (isStarted) => {
-	ScoreIncrement(-score)
 	const lvlData = new Level(currLvl).getLevelData()
 	const map = new Map(lvlData)
 	const pacman = new Pacman({
@@ -167,10 +161,10 @@ export const newGame = (isStarted) => {
 		velocity: { x: 0, y: 0 }
 	})
 
+	ScoreIncrement(-score)
 	setCanvasSize(map)
 	animation(map, pacman)(isStarted)
 }
-
 
 export const stopAnimation = () => {
 	cancelAnimationFrame(animationId)
@@ -187,6 +181,7 @@ export const gameOver = (text) => {
 			buttonTxt: "Start",
 			currLvl: currLvl
 		}).getForm()
+
 		new ModalWindow(form).render()
 	}, 300)
 }

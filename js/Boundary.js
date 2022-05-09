@@ -13,6 +13,9 @@ export class Boundary {
 	draw() {
 		const { x, y } = this.position
 
+		this.image.onload = () => {
+			ctx.drawImage(this.image, x, y)
+		}
 		ctx.drawImage(this.image, x, y)
 	}
 }

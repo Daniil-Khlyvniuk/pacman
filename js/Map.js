@@ -120,11 +120,13 @@ export class Map {
 	drawMap(pacman) {
 		const isFill = Boolean(this.borders.length)
 		if (!isFill) this.fillMap()
+		this.drawBorders()
 		winGame(this.pellets, this.powerUps)
 
-		this.drawBorders()
+
 		this.drawFood(this.powerUps, pacman)
 		this.drawFood(this.pellets, pacman)
 		this.drawGhosts(pacman)
 	}
 }
+

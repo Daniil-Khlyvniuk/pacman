@@ -12,9 +12,8 @@ const form = new Form({
 	txt: "Choose level",
 	buttonTxt: "Start",
 	currLvl: currLvl
-}).getForm()
+	}).getForm()
 
 new ModalWindow(form).render()
 
 newGame()
-

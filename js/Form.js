@@ -111,7 +111,7 @@ export class Form {
 			checkBoxes,
 			labels
 		} = this._ELEMS
-		const { title, txt, buttonTxt } = this
+		const { title, txt, buttonTxt, handleChange, onSubmit, currLvl } = this
 
 		this.styleForm()
 
@@ -128,13 +128,13 @@ export class Form {
 			labels[i].append(checkBox)
 			checkBoxWrapper.append(labels[i])
 		})
-		checkBoxes[this.currLvl - 1].checked = true
+		checkBoxes[currLvl - 1].checked = true
 
-		checkBoxWrapper.addEventListener("change", this.handleChange)
+		checkBoxWrapper.addEventListener("change", handleChange)
 
 		formEl.append(checkBoxWrapper)
 
-		btn.addEventListener("click", this.onSubmit)
+		btn.addEventListener("click", onSubmit)
 		formEl.append(btn)
 
 		return formEl
