@@ -1,5 +1,5 @@
 # PACMAN
-#### [deployed game](https://daniil-khlyvniuk.github.io/pacman/)
+#### [deployment](https://daniil-khlyvniuk.github.io/pacman/)
 ![](images/screenshot.png)
 
 
